@@ -12,9 +12,11 @@ use App\Http\Controllers\{
 
 Auth::routes();
 
-
 // ========== HOME ==========
-// root "/" cukup redirect ke route "home" bawaan Auth::routes
+// Route nama "home" cuma satu: /home
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+// root "/" cukup redirect ke /home
 Route::get('/', function () {
     return redirect()->route('home');
 });
@@ -22,9 +24,6 @@ Route::get('/', function () {
 // ======================
 //  Public & Auth Routes
 // ======================
-// Route::get('/', [HomeController::class, 'index'])->name('home');
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
-
 Route::get('/update_password', [HomeController::class, 'update_password'])->name('update_password');
 Route::patch('/store_password', [HomeController::class, 'store_password'])->name('store_password');
 
@@ -42,7 +41,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('suppliers', SupplierController::class);
 
-    // laporan hanya admin
     Route::get('medicines/report', [MedicineController::class, 'report'])->name('medicines.report');
 });
 
