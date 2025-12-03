@@ -58,3 +58,10 @@ Route::middleware(['auth', 'role:admin,kasir'])->group(function () {
 Route::get('medicines/search', [MedicineController::class, 'search'])->name('medicines.search');
 Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
 Route::get('/suppliers/search', [SupplierController::class, 'search'])->name('suppliers.search');
+
+
+
+Route::middleware(['auth', 'role:admin,kasir', 'preventBackHistory'])->group(function () {
+    Route::resource('medicines', MedicineController::class);
+    ...
+});
