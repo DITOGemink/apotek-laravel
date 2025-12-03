@@ -61,7 +61,10 @@ Route::get('/suppliers/search', [SupplierController::class, 'search'])->name('su
 
 
 
+// ======================
+//  Admin + Kasir Routes
+// ======================
 Route::middleware(['auth', 'role:admin,kasir', 'preventBackHistory'])->group(function () {
     Route::resource('medicines', MedicineController::class);
-    ...
+    Route::resource('sales', SaleController::class)->only(['index', 'create', 'store', 'show']);
 });
