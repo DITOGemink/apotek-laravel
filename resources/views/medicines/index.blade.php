@@ -112,10 +112,14 @@
         </table>
       </div>
 
-      {{-- Pagination (pakai kalau di controller sudah paginate) --}}
       @if(method_exists($medicines, 'links'))
-        <div class="mt-3">
-          {{ $medicines->links() }}
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div class="text-muted">
+            Showing {{ $medicines->firstItem() ?? 0 }} to {{ $medicines->lastItem() ?? 0 }} of {{ $medicines->total() ?? 0 }} results
+          </div>
+          <div>
+            {!! $medicines->links('pagination::bootstrap-5') !!}
+          </div>
         </div>
       @endif
 
