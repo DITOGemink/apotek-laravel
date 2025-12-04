@@ -421,6 +421,30 @@
   </div>
 </div>
 
+<!-- JS patch: force pagination SVG icons to normal size and reduce clickable area -->
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Force size for SVGs inside pagination/prev-next anchors
+  document.querySelectorAll('a[href*="?page="] svg, a[rel="next"] svg, a[rel="prev"] svg, .page-link svg, .pagination svg').forEach(function(svg){
+    svg.style.width = '20px';
+    svg.style.height = '20px';
+    svg.style.maxWidth = '20px';
+    svg.style.maxHeight = '20px';
+    svg.style.display = 'inline-block';
+    svg.style.verticalAlign = 'middle';
+    // remove any transform that could enlarge icon (defensive)
+    svg.style.transform = svg.style.transform || 'none';
+  });
+
+  // Reduce clickable area of pagination anchors so they don't appear huge
+  document.querySelectorAll('a[href*="?page="], a[rel="next"], a[rel="prev"], .page-link').forEach(function(a){
+    a.style.padding = '.2rem .4rem';
+    a.style.display = 'inline-block';
+    a.style.lineHeight = '1';
+  });
+});
+</script>
+
 @yield('scripts')
 </body>
 </html>
