@@ -107,6 +107,49 @@
       box-shadow: 0 4px 12px rgba(0,0,0,.06);
     }
 
+*** Begin Patch
+*** Update File: resources/views/layouts/master.blade.php
+@@
+     /* Hide decorative/big svgs on small screens if needed */
+     @media (max-width: 768px) {
+       .page-decor, .hero-decor, .decorative-svg { display: none !important; }
+     }
+ 
++    /* ---------- Strong fix for oversized SVG icons (pagination / buttons / nav) ---------- */
++    /* Target many possible pagination / inline-flex / anchor cases so svg does not scale huge */
++    .pagination svg,
++    .page-link svg,
++    .page-item svg,
++    .navbar svg,
++    .btn svg,
++    a svg,
++    button svg,
++    svg.w-5, svg.h-5,
++    a[class*="relative"] svg,
++    span[class*="relative"] svg,
++    a[rel="next"] svg,
++    a[rel="prev"] svg,
++    a[href*="?page="] svg,
++    a[class*="page"] svg {
++      width: 1.25rem !important;    /* 20px */
++      height: 1.25rem !important;   /* 20px */
++      max-width: 1.25rem !important;
++      max-height: 1.25rem !important;
++      display: inline-block;
++      vertical-align: middle;
++    }
++
++    /* Reduce clickable area of pagination anchors so SVG doesn't make huge clickable zone */
++    a[href*="?page="], a[rel="next"], a[rel="prev"], .page-link {
++      padding: .25rem .4rem !important;
++    }
++
++    /* If there are intentionally large decorative svgs, mark them with .svg-hero to exclude */
++    svg.svg-hero { width: auto !important; height: auto !important; max-width: none !important; }
++
+*** End Patch
+
+
   </style>
 
   @yield('head')
