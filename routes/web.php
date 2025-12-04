@@ -69,13 +69,3 @@ Route::middleware(['auth', 'role:admin,kasir', 'preventBackHistory'])->group(fun
     Route::resource('sales', SaleController::class)->only(['index', 'create', 'store', 'show']);
 });
 
-
-use Illuminate\Support\Facades\Artisan;
-
-Route::get('/reset-config', function () {
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('route:clear');
-    Artisan::call('view:clear');
-    return response('config & cache cleared', 200);
-});

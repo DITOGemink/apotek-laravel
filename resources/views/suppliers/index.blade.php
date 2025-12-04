@@ -63,11 +63,17 @@
         </table>
       </div>
 
-      @if(method_exists($suppliers, 'links'))
-        <div class="mt-3">
-          {{ $suppliers->links() }}
+      @if(method_exists($items, 'links'))
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div class="text-muted">
+            Showing {{ $items->firstItem() ?? 0 }} to {{ $items->lastItem() ?? 0 }} of {{ $items->total() ?? 0 }} results
+          </div>
+          <div>
+            {!! $items->links('pagination::bootstrap-5') !!}
+          </div>
         </div>
       @endif
+
 
     </div>
   </div>
