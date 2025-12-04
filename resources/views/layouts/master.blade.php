@@ -421,10 +421,10 @@
   </div>
 </div>
 
-<!-- JS patch: force pagination SVG icons to normal size and reduce clickable area -->
+<!-- Stronger runtime fix: shrink any oversized svg automatically -->
 <script>
 document.addEventListener('DOMContentLoaded', function(){
-  // Force size for SVGs inside pagination/prev-next anchors
+  // 1) Force shrink of pagination SVGs (existing logic)
   document.querySelectorAll('a[href*="?page="] svg, a[rel="next"] svg, a[rel="prev"] svg, .page-link svg, .pagination svg').forEach(function(svg){
     svg.style.width = '20px';
     svg.style.height = '20px';
@@ -432,18 +432,44 @@ document.addEventListener('DOMContentLoaded', function(){
     svg.style.maxHeight = '20px';
     svg.style.display = 'inline-block';
     svg.style.verticalAlign = 'middle';
-    // remove any transform that could enlarge icon (defensive)
     svg.style.transform = svg.style.transform || 'none';
   });
 
-  // Reduce clickable area of pagination anchors so they don't appear huge
   document.querySelectorAll('a[href*="?page="], a[rel="next"], a[rel="prev"], .page-link').forEach(function(a){
     a.style.padding = '.2rem .4rem';
     a.style.display = 'inline-block';
     a.style.lineHeight = '1';
   });
+
+  // 2) Defensive: find ANY svg that's visually huge and shrink it
+  document.querySelectorAll('svg').forEach(function(svg){
+    try {
+      const rect = svg.getBoundingClientRect();
+      // if svg too large relative to viewport or > 80px dimension, shrink it
+      if (rect.width > 200 || rect.height > 200 || rect.width > window.innerWidth * 0.25) {
+        svg.style.width = '20px';
+        svg.style.height = '20px';
+        svg.style.maxWidth = '20px';
+        svg.style.maxHeight = '20px';
+        svg.style.display = 'inline-block';
+        svg.style.verticalAlign = 'middle';
+      }
+    } catch(e) {
+      // ignore any read errors
+    }
+  });
+
+  // 3) If you want to prevent these svgs from making huge clickable zones, also limit parent anchors
+  document.querySelectorAll('a, button').forEach(function(el){
+    // only adjust anchors that look like pagination (have href with ?page or rel attr) or large bbox
+    if ((el.href && el.href.includes('?page=')) || el.getAttribute('rel') === 'next' || el.getAttribute('rel') === 'prev') {
+      el.style.padding = '.2rem .4rem';
+      el.style.display = 'inline-block';
+    }
+  });
 });
 </script>
+
 
 @yield('scripts')
 </body>
