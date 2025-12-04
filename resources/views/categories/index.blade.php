@@ -55,8 +55,13 @@
       </div>
 
       @if(method_exists($categories, 'links'))
-        <div class="mt-3">
-          {{ $categories->links() }}
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div class="text-muted">
+            Showing {{ $categories->firstItem() ?? 0 }} to {{ $categories->lastItem() ?? 0 }} of {{ $categories->total() ?? 0 }} results
+          </div>
+          <div>
+            {!! $categories->links('pagination::bootstrap-5') !!}
+          </div>
         </div>
       @endif
 

@@ -49,12 +49,17 @@
           </table>
         </div>
 
-        @if(method_exists($sales, 'links'))
-          <div class="mt-3">
-            {{ $sales->links() }}
-          </div>
-        @endif
-      @endif
+          @if(method_exists($sales, 'links'))
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <div class="text-muted">
+                Showing {{ $sales->firstItem() ?? 0 }} to {{ $sales->lastItem() ?? 0 }} of {{ $sales->total() ?? 0 }} results
+              </div>
+              <div>
+                {!! $sales->links('pagination::bootstrap-5') !!}
+              </div>
+            </div>
+          @endif
+
     </div>
   </div>
 </div>
